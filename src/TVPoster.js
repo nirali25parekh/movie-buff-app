@@ -6,7 +6,7 @@ import { Text, View, Image, StyleSheet, ImageBackground, TouchableOpacity  } fro
 export default class TVPoster extends Component {
 
   _onPosterPressed() {
-    alert(this.props.data.name)
+    //alert('you pressed a tv series')
   }
   
   render = () => {

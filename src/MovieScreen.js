@@ -1,15 +1,15 @@
 import React from 'react'
 import {View, FlatList, Text, StyleSheet} from 'react-native';
 import MoviePoster from './MoviePoster'
-
+//import MovieDetailsScreen from './MovieDetailsScreen'
 
 export default class MovieScreen extends React.Component {
 
-      static navigationOptions = {
-      headerTitle: 'Movies', 
-    }
+  static navigationOptions = ({navigation}) => ({
+    headerTitle: 'Movies',
+  })
 
-    constructor(props)
+        constructor(props)
     {
         super(props);
         this.state = {
@@ -41,19 +41,27 @@ export default class MovieScreen extends React.Component {
     }
   
     render() {
+      
       return (
         <View style={styles.movieScreen}>
            <FlatList
              style={styles.flatlist}
              scrollEnabled = {true}
              numColumns={3}
-             //horizontal={true}
              data={this.state.dataSource}
-             renderItem={({item}) => <MoviePoster  data = {item} />}
+             renderItem={({item}) => <MoviePoster  
+                                      data = {item} 
+                                      _onPosterPressed = {(data)=> this._onPosterPressed(data)} />}
              keyExtractor={({id}, index) => id.toString()}
            />
         </View>
       );
+    }
+
+    _onPosterPressed = (data) => {
+      
+      console.warn(data)
+      //this.props.navigation.push('MovieDetails');
     }
   }
 
@@ -64,3 +72,4 @@ export default class MovieScreen extends React.Component {
       flex:1,
     },
   })
+

@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, Image, ImageBackground, TouchableOpacity  } from 'react-native';
-
+import MovieDetailsScreen from './MovieDetailsScreen'
 export default class MoviePoster extends Component {
     
-  _onPosterPressed() {
-    this.props.navigation.push('MovieDetails', {
-      ...this.props.data,
-    })
-  }
-
   render = () => {
       const imageUrl = `http://image.tmdb.org/t/p/w185/${this.props.data.poster_path}`
     return (
-      <TouchableOpacity onPress={this._onPosterPressed()}>
+      <TouchableOpacity onPress={() => (this.props._onPosterPressed(this.props.data.title))}>
         <View style={styles.poster}>
           <ImageBackground source={{uri: imageUrl}} 
                   style={styles.image}>
@@ -23,6 +17,7 @@ export default class MoviePoster extends Component {
         </TouchableOpacity>
     );
   }
+
 }
 const styles = StyleSheet.create({
   poster: {
@@ -32,7 +27,6 @@ const styles = StyleSheet.create({
       borderRadius: 6,
       flexDirection:'column',
       minHeight: 200, 
-      //backgroundColor: 'green',
       flexWrap:'wrap',
   },
   
@@ -51,8 +45,5 @@ const styles = StyleSheet.create({
       color: 'white',
       fontWeight:'bold',
       marginRight: 4,
-      //top: 145,
-
-      
     },
 });

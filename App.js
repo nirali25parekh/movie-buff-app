@@ -1,6 +1,7 @@
 import React from 'react';
 //import { Text, View, FlatList, ScrollView } from 'react-native';
 import {  createAppContainer } from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack'
 import { createBottomTabNavigator,} from 'react-navigation-tabs'
 import MovieScreen from './src/MovieScreen'
 import TVScreen from './src/TVScreen'
@@ -34,4 +35,6 @@ const TabNavigator = createBottomTabNavigator({
 }
 );
 
-export default createAppContainer(TabNavigator);
+const stackNavigator = createStackNavigator({ TabNavigator }, { headerMode: "none" });
+
+export default createAppContainer(stackNavigator);
