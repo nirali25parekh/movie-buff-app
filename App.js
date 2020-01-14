@@ -1,40 +1,55 @@
 import React from 'react';
-//import { Text, View, FlatList, ScrollView } from 'react-native';
-import {  createAppContainer } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack'
-import { createBottomTabNavigator,} from 'react-navigation-tabs'
+import { Button, Text, View } from 'react-native';
+//import { Ionicons } from '@expo/vector-icons';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+//import FontAwsomeIcon from 'react-native-vector-icons/FontAwesome'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createAppContainer } from 'react-navigation';
+import FontAwsomeIcon from 'react-native-vector-icons/FontAwesome'
+
 import MovieScreen from './src/MovieScreen'
 import TVScreen from './src/TVScreen'
-import { Icon } from 'react-native-elements'
+import DetailsScreen from './src/DetailsScreen'
 
-const TabNavigator = createBottomTabNavigator({
-  Movies : {
-    screen: MovieScreen,
-    navigationOptions:{  
-      tabBarLabel:'Movies',  
-      tabBarIcon:({tintColor})=>(  
-          <Icon name="man" color={tintColor} size={25}/>  
-      )  
-    } 
-  } ,
-  TV : {
-    screen: TVScreen,
-    navigationOptions:{  
-      tabBarLabel:'TV',  
-      tabBarIcon:({tintColor})=>(  
-          <Icon name="tv" color={tintColor} size={25}/>  
-      )  
-    } 
-  }
-},
-{
-  tabBarOptions: {
-  activeTintColor: '#a41034', //which selected
-},
-  barStyle: { backgroundColor: '#694fad' },
+const MovieStack = createStackNavigator({
+  MovieHome: { screen: MovieScreen },
+  Details: { screen: DetailsScreen },
+});
+
+const TVStack = createStackNavigator({
+  Settings: { screen: TVScreen },
+  Details: { screen: DetailsScreen },
+});
+
+export default createAppContainer(createMaterialBottomTabNavigator(
+  {
+    Movies: {
+      screen: MovieStack,
+      navigationOptions: {
+        tabBarLabel: 'Movie',
+        tabBarColor: 'white',
+        tabBarIcon: ({ tintColor }) => (<FontAwsomeIcon name="film" color={tintColor} size={25}></FontAwsomeIcon>),
+      },
+    },
+    TV: {
+      screen: TVStack,
+      navigationOptions: {
+        tabBarLabel: 'TV',
+        tabBarColor: 'white',
+        tabBarIcon: ({ tintColor }) => (<FontAwsomeIcon name="clock-o" color={tintColor} size={25}> </FontAwsomeIcon>),
+      },
+    },
+  },
+  {
+    initialRouteName: 'Movies',
+    activeColor: '#f0edf6',
+    inactiveColor: 'grey',
+    barStyle: { backgroundColor: '#004d40' },
+    order: ['Movies', 'TV',],
+
+  }, {
+  showLabel: 'true',
+  labelStyle: { alignItem: 'center' }
 }
-);
 
-const stackNavigator = createStackNavigator({ TabNavigator }, { headerMode: "none" });
-
-export default createAppContainer(stackNavigator);
+));

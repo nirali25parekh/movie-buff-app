@@ -1,38 +1,45 @@
 import React from 'react'
-import {View, FlatList, Text, StyleSheet} from 'react-native';
-import Ionicons from 'react-native-ionicons'
+import { View, FlatList, Text, StyleSheet } from 'react-native';
+//import Ionicons from 'react-native-ionicons'
 import TVPoster from './TVPoster'
+import { screenStyles } from '../styles'
 
 export default class TVScreen extends React.Component {
 
   static navigationOptions = {
-    headerTitle: 'TV', 
-    //tabBarIcon: <Ionicons name="tv" size={15} color={'red'} />
-  }
-  constructor(props)
-  {
-      super(props);
-      this.state = {
-          isLoading : true,
-          dataSource : null,
-      }
+    title: 'TV',
+    headerStyle: {
+      backgroundColor: '#004d40',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      dataSource: null,
+    }
   }
 
-  componentDidMount()
-  {
-      this.getTrendingTVFromApi();
+  componentDidMount() {
+    this.getTrendingTVFromApi();
   }
 
-  getTrendingTVFromApi = async()=> {
+  getTrendingTVFromApi = async () => {
     try {
       let response = await fetch(
         'https://api.themoviedb.org/3/trending/tv/day?api_key=05bf8fa390e3359f75c683c86e71844d',
       );
       let responseJson = await response.json();
-      this.setState ({
-        isLoading : false,
-        dataSource : responseJson.results,
-    }) //responseJson.results is an array
+      this.setState({
+        isLoading: false,
+        dataSource: responseJson.results,
+      }) //responseJson.results is an array
     } catch (error) {
       console.error(error);
     }
@@ -40,24 +47,21 @@ export default class TVScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.tvScreen}>
+      <View style={screenStyles.screen}>
         <FlatList
-          scrollEnabled = {true}
+          style={screenStyles.flatList}
+          scrollEnabled={true}
           numColumns={3}
-          //horizontal={true}
           data={this.state.dataSource}
-          renderItem={({item}) => <TVPoster  data = {item} />}
-          keyExtractor={({id}, index) => id.toString()}
+          renderItem={({ item }) => <TVPoster
+            data={item}
+            _onPosterPressed={(data) => this._onPosterPressed(data)} />}
+          keyExtractor={({ id }, index) => id.toString()}
         />
       </View>
     );
   }
+  _onPosterPressed = (data) => {
+    this.props.navigation.navigate('Details' , {paramTitle: data.name, paramId : data.id, paramMediaType  : data.media_type});
+  }
 }
-
-const styles = StyleSheet.create({
-  tvScreen:{
-    backgroundColor: 'black',
-    flexDirection:'row',
-    flex:1,
-  },
-})
